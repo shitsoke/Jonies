@@ -12,50 +12,69 @@
 </head>
 
 <body class="menu-page-body">
-    <div class="menu-shell">
-        <header class="site-header">
-            <div class="brand-wrap" aria-label="Jonies home">
+    <div class="page-shell">
+        <header class="site-header dark-header">
+            <a class="brand-wrap" href="{{ route('home') }}" aria-label="Jonies home">
                 <img class="brand-mark" src="{{ asset('images/Jonies logo.jpg') }}" alt="Jonies logo">
                 <div class="brand-copy">
                     <span class="brand-name">JONIES</span>
                     <span class="brand-tag">SIZZLERS + ROAST</span>
                 </div>
-            </div>
+            </a>
 
             <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </button>
 
-            <nav class="main-nav" aria-label="Main menu">
+            <nav class="main-nav dark-nav" aria-label="Main menu">
                 <a href="{{ route('home') }}">HOME</a>
                 <a href="{{ route('about') }}">ABOUT</a>
-                <a href="{{ route('menu') }}" class="nav-active">MENU</a>
+                <a class="nav-active" href="{{ route('menu') }}">MENU</a>
                 <a href="{{ route('location') }}">LOCATION</a>
                 <a href="{{ route('contact') }}">GET IN TOUCH</a>
                 <a href="{{ route('careers') }}">CAREERS</a>
             </nav>
         </header>
 
-        <main class="menu-page">
-            <div class="menu-hero">
+        <main class="menu-reference-main">
+            <!-- Centered Page Header -->
+            <div class="menu-hero-center">
                 <h1>Crave-Worthy Favorites!</h1>
-
                 <p>
-                    Big flavors at prices that keep your wallet happy. Available for solo dining with unli-rice options, or massive bundles built for sharing.
+                    Big flavors at prices that keep your wallet happy. Available for<br>
+                    solo dining with unli-rice options, or massive bundles built for sharing.
                 </p>
             </div>
 
-            <div class="menu-category-tabs" aria-label="Menu categories">
+            <!-- Category Banner Grid -->
+            <div class="menu-category-banners" aria-label="Menu categories">
+                @php
+                    $categoryImages = [
+                        'all-time-favorites' => asset('images/All time favorites.jpg'),
+                        'house-specialties' => asset('images/House of Specialties.png'),
+                        'seafoods' => asset('images/Seafood.png'),
+                        'desserts' => asset('images/homeImage 2.jpg'),
+                        'shareable-bundles' => asset('images/homeImage 1.jpg'),
+                    ];
+                @endphp
+
                 @foreach($categories as $key => $label)
+                    @php
+                        $bannerImage = $categoryImages[$key] ?? asset('images/All time Favorites.png');
+                    @endphp
                     <a href="{{ route('menu', ['category' => $key]) }}"
-                       class="menu-tab {{ $selectedCategory === $key ? 'active' : '' }}">
-                        {{ $label }}
+                       class="category-banner-card {{ $selectedCategory === $key ? 'active' : '' }}">
+                        <div class="category-banner-header">
+                            <span>{{ $label }}</span>
+                        </div>
+                        <div class="category-banner-image">
+                            <img src="{{ $bannerImage }}" alt="{{ $label }}">
+                        </div>
                     </a>
                 @endforeach
             </div>
 
+            <!-- Food Items Listing Grid -->
             <section class="menu-grid">
                 @forelse ($items as $item)
                     <article class="menu-card">
@@ -83,6 +102,22 @@
                 @endforelse
             </section>
         </main>
+
+        <footer class="site-footer">
+            <div class="footer-brand">
+                <div class="brand-name">JONIES</div>
+                <div class="brand-tag">SIZZLERS + ROAST</div>
+            </div>
+            <nav class="footer-links" aria-label="Footer links">
+                <a href="{{ route('home') }}">Home</a>
+                <a href="{{ route('about') }}">About</a>
+                <a href="{{ route('menu') }}">Menu</a>
+                <a href="{{ route('location') }}">Location</a>
+                <a href="{{ route('careers') }}">Careers</a>
+                <a href="{{ route('contact') }}">Contact</a>
+            </nav>
+            <span>&copy; {{ date('Y') }} Jonies. All rights reserved.</span>
+        </footer>
     </div>
 </body>
 

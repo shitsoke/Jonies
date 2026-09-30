@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SiteContent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SiteContentController extends Controller
 {
@@ -40,11 +41,35 @@ class SiteContentController extends Controller
         }
 
         $payload = $request->input('content', []);
+        $imagesData = $request->file('images', []);
 
         foreach ($payload as $page => $items) {
             foreach ($items as $key => $entry) {
                 $delete = (bool) ($entry['delete'] ?? false);
-                if ($delete || trim((string) ($entry['label'] ?? '')) === '' && trim((string) ($entry['value'] ?? '')) === '') {
+                $value = $entry['value'] ?? '';
+
+                // Handle Image File Uploads
+                if (isset($imagesData[$page][$key])) {
+                    $file = $imagesData[$page][$key];
+                    if ($file->isValid()) {
+                        // Delete previous uploaded file from public disk if it exists
+                        $existing = SiteContent::where('page', $page)->where('key', $key)->first();
+                        if ($existing && $existing->value && Storage::disk('public')->exists($existing->value)) {
+                            Storage::disk('public')->delete($existing->value);
+                        }
+
+                        // Store new image in 'storage/app/public/content'
+                        $value = $file->store('content', 'public');
+                    }
+                }
+
+                if ($delete || (trim((string) ($entry['label'] ?? '')) === '' && trim((string) $value) === '')) {
+                    // Remove file from storage on delete
+                    $existing = SiteContent::where('page', $page)->where('key', $key)->first();
+                    if ($existing && $existing->value && Storage::disk('public')->exists($existing->value)) {
+                        Storage::disk('public')->delete($existing->value);
+                    }
+
                     SiteContent::where('page', $page)->where('key', $key)->delete();
                     continue;
                 }
@@ -53,7 +78,7 @@ class SiteContentController extends Controller
                     ['page' => $page, 'key' => $key],
                     [
                         'label' => $entry['label'] ?? 'Content',
-                        'value' => $entry['value'] ?? '',
+                        'value' => $value,
                         'sort_order' => $entry['sort_order'] ?? 0,
                     ]
                 );
@@ -69,6 +94,7 @@ class SiteContentController extends Controller
             'home' => [
                 'main_title' => 'Have a',
                 'subtitle' => 'Sizzling Day!',
+                'hero_image' => 'images/homeImage 1.jpg',
                 'lead_text' => 'Serving Cebu\'s favorite sizzling home-style plates and roasted specialties for 25 years.',
                 'supporting_text' => 'Experience the ultimate Filipino comfort food experience. From our iconic table-side flaming chicken to smoking-hot iron plates packed with savory goodness, we serve up bold flavors that bring people together.',
             ],

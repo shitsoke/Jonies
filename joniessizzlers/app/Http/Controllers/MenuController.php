@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
+    private function getCategories(): array
+    {
+        return [
+            'all-time-favorites' => 'All time favorites',
+            'house-of-specialties' => 'House of Specialties',
+            'seafoods' => 'Seafoods',
+            'dessert' => 'Dessert',
+            'shareable-flaming-bundles' => 'Shareable Flaming Bundles',
+        ];
+    }
+
     public function showFeatured(string $slug)
     {
         $featuredFoods = [
@@ -68,13 +79,7 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         $selectedCategory = $request->query('category', 'all-time-favorites');
-        $allCategories = [
-            'all-time-favorites' => 'All time favorites',
-            'house-of-specialties' => 'House of Specialties',
-            'seafoods' => 'Seafoods',
-            'dessert' => 'Dessert',
-            'shareable-flaming-bundles' => 'Shareable Flaming Bundles',
-        ];
+        $allCategories = $this->getCategories();
 
         $items = MenuItem::query()
             ->where('category', $selectedCategory)
@@ -102,6 +107,7 @@ class MenuController extends Controller
 
         return view('admin.menu', [
             'items' => $items,
+            'categories' => $this->getCategories(),
             'editingItem' => null,
         ]);
     }
@@ -145,6 +151,7 @@ class MenuController extends Controller
 
         return view('admin.menu', [
             'items' => MenuItem::latest()->get(),
+            'categories' => $this->getCategories(),
             'editingItem' => $menuItem,
         ]);
     }

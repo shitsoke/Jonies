@@ -3,8 +3,10 @@
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SiteContentController;
+use App\Http\Controllers\CareerApplicationController;
 use App\Models\Promotion;
 use App\Models\SiteContent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,6 +32,16 @@ Route::get('/contact', function () {
     return view('contact', ['pageContent' => SiteContent::getPageMap('contact')]);
 })->name('contact');
 
+Route::post('/contact', function (Request $request) {
+    $request->validate([
+        'name'    => 'required|string|max:255',
+        'email'   => 'required|email|max:255',
+        'message' => 'required|string',
+    ]);
+
+    return redirect()->route('contact')->with('success', 'Thank you! Your message has been sent.');
+})->name('contact.submit');
+
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 Route::get('/foods/{slug}', [MenuController::class, 'showFeatured'])->name('foods.show');
 Route::get('/promotions/{promotion}', [PromotionController::class, 'show'])->name('promotions.show');
@@ -53,4 +65,4 @@ Route::delete('/admin/promotions/{promotion}', [PromotionController::class, 'des
 Route::get('/admin/content', [SiteContentController::class, 'adminIndex'])->name('admin.content');
 Route::post('/admin/content', [SiteContentController::class, 'save'])->name('admin.content.save');
 
-Route::post('/careers/apply', [\App\Http\Controllers\CareerApplicationController::class, 'store'])->name('careers.apply');
+Route::post('/careers/apply', [CareerApplicationController::class, 'store'])->name('careers.apply');
