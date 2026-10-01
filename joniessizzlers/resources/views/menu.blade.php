@@ -46,30 +46,12 @@
                 </p>
             </div>
 
-            <!-- Category Banner Grid -->
-            <div class="menu-category-banners" aria-label="Menu categories">
-                @php
-                    $categoryImages = [
-                        'all-time-favorites' => asset('images/All time favorites.jpg'),
-                        'house-specialties' => asset('images/House of Specialties.png'),
-                        'seafoods' => asset('images/Seafood.png'),
-                        'desserts' => asset('images/homeImage 2.jpg'),
-                        'shareable-bundles' => asset('images/homeImage 1.jpg'),
-                    ];
-                @endphp
-
+            <!-- Compact Red Category Pills -->
+            <div class="menu-category-banners" style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 32px;" aria-label="Menu categories">
                 @foreach($categories as $key => $label)
-                    @php
-                        $bannerImage = $categoryImages[$key] ?? asset('images/All time Favorites.png');
-                    @endphp
                     <a href="{{ route('menu', ['category' => $key]) }}"
-                       class="category-banner-card {{ $selectedCategory === $key ? 'active' : '' }}">
-                        <div class="category-banner-header">
-                            <span>{{ $label }}</span>
-                        </div>
-                        <div class="category-banner-image">
-                            <img src="{{ $bannerImage }}" alt="{{ $label }}">
-                        </div>
+                       style="background: #a82323; color: #ffffff; padding: 14px 24px; border-radius: 8px; font-weight: 800; text-decoration: none; font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; letter-spacing: 0.5px; border: 2px solid {{ $selectedCategory === $key ? '#f2b84b' : 'transparent' }}; box-shadow: {{ $selectedCategory === $key ? '0 0 12px rgba(242, 184, 75, 0.4)' : 'none' }}; transition: all 0.2s ease;">
+                        {{ $label }}
                     </a>
                 @endforeach
             </div>
@@ -80,19 +62,20 @@
                     <article class="menu-card">
                         <div class="menu-card-image-wrap">
                             @php
-                                $imageUrl = $item->image_path;
+                                $imageUrl = $item->image_path ?? $item->image;
                                 if ($imageUrl && !str_starts_with($imageUrl, 'http')) {
-                                    $imageUrl = asset('storage/' . $imageUrl);
+                                    $imageUrl = str_starts_with($imageUrl, 'images/') ? asset($imageUrl) : asset('storage/' . $imageUrl);
                                 }
                             @endphp
-                            <img src="{{ $imageUrl ?: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80' }}" alt="{{ $item->title }}">
+                            <img src="{{ $imageUrl ?: asset('images/All time favorites.jpg') }}" alt="{{ $item->title ?? $item->name }}">
                         </div>
                         <div class="menu-card-body">
                             <div class="menu-card-top">
-                                <h3>{{ $item->title }}</h3>
-                                <span>₱{{ number_format((float) $item->price, 2) }}</span>
+                                <h3>{{ $item->title ?? $item->name }}</h3>
+                                <span>₱{{ number_format((float) ($item->price ?? 0), 2) }}</span>
                             </div>
                             <p>{{ $item->description ?: 'Freshly prepared and served with the Jonies signature taste.' }}</p>
+                            <a class="menu-card-details" href="{{ route('menu-items.show', $item) }}">VIEW DETAILS</a>
                         </div>
                     </article>
                 @empty

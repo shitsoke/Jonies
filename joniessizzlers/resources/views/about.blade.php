@@ -39,11 +39,11 @@
         <main class="about-reference-page">
             <div class="about-reference-content">
                 <div class="about-reference-copy">
-                    <h1>Turning Everyday Dining into a Feast</h1>
+                    <h1>{{ $pageContent->get('main_title')?->value ?? 'Turning Everyday Dining into a Feast' }}</h1>
                     <div class="about-reference-text">
-                        <p>Born in Cebu, Jonies Sizzlers & Roast has spent years mastering the art of the perfect sizzle.</p>
-                        <p>We specialize in hot, smoking sizzling plates, slow-cooked roasts, and our signature theatrical "flaming" dishes that turn a simple meal into an unforgettable dining experience.</p>
-                        <p>We believe that great food shouldn't cost a fortune. Whether you are gathered for a family reunion, catching up with friends, or grabbing a quick lunch break, our vibrant, clean, and welcoming spaces are designed to make you feel right at home. Come for the aroma, stay for the taste, and leave with a smile.</p>
+                        <p>{{ $pageContent->get('paragraph_1')?->value ?? 'Born in Cebu, Jonies Sizzlers & Roast has spent years mastering the art of the perfect sizzle.' }}</p>
+                        <p>{{ $pageContent->get('paragraph_2')?->value ?? 'We specialize in hot, smoking sizzling plates, slow-cooked roasts, and our signature theatrical "flaming" dishes that turn a simple meal into an unforgettable dining experience.' }}</p>
+                        <p>{{ $pageContent->get('paragraph_3')?->value ?? "We believe that great food shouldn't cost a fortune. Whether you are gathered for a family reunion, catching up with friends, or grabbing a quick lunch break, our vibrant, clean, and welcoming spaces are designed to make you feel right at home. Come for the aroma, stay for the taste, and leave with a smile." }}</p>
                     </div>
                 </div>
 

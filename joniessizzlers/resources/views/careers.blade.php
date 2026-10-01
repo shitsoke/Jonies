@@ -39,7 +39,7 @@
         <main class="careers-reference-page">
             <div class="careers-reference-content">
                 <div class="careers-reference-copy">
-                    <h1>Join Our Sizzling Team!</h1>
+                    <h1>{{ $pageContent->get('main_title')?->value ?? 'Join Our Sizzling Team!' }}</h1>
 
                     @if(session('success'))
                         <div style="background: rgba(40, 167, 69, 0.2); border: 1px solid #28a745; color: #ffffff; padding: 12px 20px; border-radius: 6px; margin-bottom: 24px;">
@@ -58,8 +58,8 @@
                     @endif
 
                     <div class="careers-reference-text">
-                        <p>At Jonies Sizzlers & Roast, we believe that great food starts with great people. We are always on the lookout for passionate, energetic, and dedicated individuals to join our growing family across Cebu.</p>
-                        <p>Whether you thrive in the kitchen or excel at hospitality on the dining floor, we offer competitive pay, career growth opportunities, and a supportive team environment where every day brings something exciting.</p>
+                        <p>{{ $pageContent->get('intro')?->value ?? 'At Jonies Sizzlers & Roast, we believe that great food starts with great people. We are always on the lookout for passionate, energetic, and dedicated individuals to join our growing family across Cebu.' }}</p>
+                        <p>{{ $pageContent->get('body')?->value ?? 'Whether you thrive in the kitchen or excel at hospitality on the dining floor, we offer competitive pay, career growth opportunities, and a supportive team environment where every day brings something exciting.' }}</p>
                     </div>
 
                     <div class="careers-apply-info">

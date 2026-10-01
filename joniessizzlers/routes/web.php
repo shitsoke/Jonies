@@ -4,6 +4,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SiteContentController;
 use App\Http\Controllers\CareerApplicationController;
+use App\Models\MenuItem;
+use App\Models\ContactMessage;
 use App\Models\Promotion;
 use App\Models\SiteContent;
 use Illuminate\Http\Request;
@@ -12,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home', [
         'pageContent' => SiteContent::getPageMap('home'),
-        'promotions' => Promotion::latest()->get(),
+        'promotions'  => Promotion::latest()->get(),
+        'menuItems'   => MenuItem::latest()->take(6)->get(),
     ]);
 })->name('home');
 
@@ -33,16 +36,20 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::post('/contact', function (Request $request) {
-    $request->validate([
+    $validated = $request->validate([
         'name'    => 'required|string|max:255',
         'email'   => 'required|email|max:255',
-        'message' => 'required|string',
+        'subject' => 'nullable|string|max:255',
+        'message' => 'required|string|max:10000',
     ]);
+
+    ContactMessage::create($validated);
 
     return redirect()->route('contact')->with('success', 'Thank you! Your message has been sent.');
 })->name('contact.submit');
 
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::get('/menu-items/{menuItem}', [MenuController::class, 'show'])->name('menu-items.show');
 Route::get('/foods/{slug}', [MenuController::class, 'showFeatured'])->name('foods.show');
 Route::get('/promotions/{promotion}', [PromotionController::class, 'show'])->name('promotions.show');
 

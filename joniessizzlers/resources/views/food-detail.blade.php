@@ -13,13 +13,13 @@
 
 <body>
     <div class="page-shell">
-        <header class="site-header">
+        <header class="site-header dark-header">
             <a class="brand-wrap" href="{{ route('home') }}" aria-label="Jonies home">
                 <img class="brand-mark" src="{{ asset('images/Jonies logo.jpg') }}" alt="Jonies logo">
                 <div class="brand-copy"><span class="brand-name">JONIES</span><span class="brand-tag">SIZZLERS + ROAST</span></div>
             </a>
             <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-            <nav class="main-nav" aria-label="Main menu">
+            <nav class="main-nav dark-nav" aria-label="Main menu">
                 <a href="{{ route('home') }}">HOME</a><a href="{{ route('about') }}">ABOUT</a><a class="nav-active" href="{{ route('menu') }}">MENU</a><a href="{{ route('location') }}">LOCATION</a><a href="{{ route('contact') }}">GET IN TOUCH</a><a href="{{ route('careers') }}">CAREERS</a>
             </nav>
         </header>
@@ -27,7 +27,15 @@
         <main class="promotion-detail food-detail" aria-labelledby="food-title">
             <a class="text-link promotion-back-link" href="{{ route('home') }}">&larr; BACK TO HOME</a>
             <div class="promotion-detail-layout">
-                <div class="promotion-detail-image"><img src="{{ asset($food['image']) }}" alt="{{ $food['title'] }}"></div>
+                @php
+                    $foodImage = $food['image'];
+                    $foodImageUrl = $foodImage && str_starts_with($foodImage, 'http')
+                        ? $foodImage
+                        : ($foodImage && str_starts_with($foodImage, 'images/')
+                            ? asset($foodImage)
+                            : asset('storage/' . $foodImage));
+                @endphp
+                <div class="promotion-detail-image"><img src="{{ $foodImageUrl }}" alt="{{ $food['title'] }}"></div>
                 <div class="promotion-detail-copy">
                     <p class="section-kicker">JONIES MENU</p>
                     <h1 id="food-title">{{ $food['title'] }}</h1>

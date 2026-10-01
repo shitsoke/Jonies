@@ -40,17 +40,45 @@ class SiteContentController extends Controller
             return redirect()->route('admin.login');
         }
 
+        $request->validate([
+            'content' => ['nullable', 'array'],
+            'content.*' => ['array'],
+            'content.*.*' => ['array'],
+            'content.*.*.label' => ['nullable', 'string', 'max:255'],
+            'content.*.*.value' => ['nullable', 'string', 'max:10000'],
+            'content.*.*.sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
+            'content.*.*.delete' => ['nullable', 'boolean'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['array'],
+            'images.*.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
+        ]);
+
         $payload = $request->input('content', []);
-        $imagesData = $request->file('images', []);
+        $allowedPages = ['home', 'about', 'location', 'careers', 'contact'];
+        $allowedKeys = [
+            'home' => ['main_title', 'subtitle', 'hero_image', 'hero_image_2', 'hero_image_3', 'lead_text', 'supporting_text'],
+            'about' => ['main_title', 'paragraph_1', 'paragraph_2', 'paragraph_3'],
+            'location' => ['main_title', 'intro'],
+            'careers' => ['main_title', 'subtitle', 'intro', 'body'],
+            'contact' => ['main_title', 'description'],
+        ];
 
         foreach ($payload as $page => $items) {
+            if (!in_array($page, $allowedPages, true)) {
+                continue;
+            }
+
             foreach ($items as $key => $entry) {
+                if (!in_array($key, $allowedKeys[$page], true)) {
+                    continue;
+                }
+
                 $delete = (bool) ($entry['delete'] ?? false);
                 $value = $entry['value'] ?? '';
 
                 // Handle Image File Uploads
-                if (isset($imagesData[$page][$key])) {
-                    $file = $imagesData[$page][$key];
+                $file = $request->file("images.$page.$key");
+                if ($file) {
                     if ($file->isValid()) {
                         // Delete previous uploaded file from public disk if it exists
                         $existing = SiteContent::where('page', $page)->where('key', $key)->first();
@@ -79,7 +107,7 @@ class SiteContentController extends Controller
                     [
                         'label' => $entry['label'] ?? 'Content',
                         'value' => $value,
-                        'sort_order' => $entry['sort_order'] ?? 0,
+                        'sort_order' => (int) ($entry['sort_order'] ?? 0),
                     ]
                 );
             }
@@ -95,6 +123,8 @@ class SiteContentController extends Controller
                 'main_title' => 'Have a',
                 'subtitle' => 'Sizzling Day!',
                 'hero_image' => 'images/homeImage 1.jpg',
+                'hero_image_2' => 'images/homeImage 2.jpg',
+                'hero_image_3' => 'images/homeImage 3.jpg',
                 'lead_text' => 'Serving Cebu\'s favorite sizzling home-style plates and roasted specialties for 25 years.',
                 'supporting_text' => 'Experience the ultimate Filipino comfort food experience. From our iconic table-side flaming chicken to smoking-hot iron plates packed with savory goodness, we serve up bold flavors that bring people together.',
             ],

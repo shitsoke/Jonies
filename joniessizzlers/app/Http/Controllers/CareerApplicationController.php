@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CareerApplication;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CareerApplicationController extends Controller
 {
@@ -16,12 +16,15 @@ class CareerApplicationController extends Controller
             'message' => 'nullable|string',
         ]);
 
-        // Save resume file to storage/app/public/resumes
-        if ($request->hasFile('resume')) {
-            $resumePath = $request->file('resume')->store('resumes', 'public');
-        }
+        $resumePath = $request->file('resume')->store('resumes', 'local');
 
-        // Redirect back to the careers page with a success message
+        CareerApplication::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'resume_path' => $resumePath,
+            'message' => $validated['message'] ?? null,
+        ]);
+
         return redirect()->route('careers')->with('success', 'Thank you for your application! Our team will review your resume shortly.');
     }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -43,11 +45,31 @@ class MenuController extends Controller
                 'image' => 'images/Seafood.png',
                 'category' => 'seafoods',
             ],
+            'dessert' => [
+                'title' => 'Dessert',
+                'description' => 'Sweet Filipino treats featuring our signature Halo-Halo.',
+                'price' => 'From ₱120',
+                'image' => 'images/Halo Halo.png',
+                'category' => 'dessert',
+            ],
         ];
 
         abort_unless(isset($featuredFoods[$slug]), 404);
 
         return view('food-detail', ['food' => $featuredFoods[$slug]]);
+    }
+
+    public function show(MenuItem $menuItem)
+    {
+        return view('food-detail', [
+            'food' => [
+                'title' => $menuItem->title,
+                'description' => $menuItem->description ?: 'Freshly prepared and served with the Jonies signature taste.',
+                'price' => '₱' . number_format((float) $menuItem->price, 2),
+                'image' => $menuItem->image_path,
+                'category' => $menuItem->category,
+            ],
+        ]);
     }
 
     public function adminLoginForm()
@@ -57,10 +79,9 @@ class MenuController extends Controller
 
     public function adminLogin(Request $request)
     {
-        $password = $request->input('password');
-        $expected = 'joniesadmin2026';
+        $password = (string) $request->input('password');
 
-        if ($password !== $expected) {
+        if (!Hash::check($password, (string) config('app.admin_password_hash'))) {
             return back()->withErrors(['password' => 'Incorrect password.'])->withInput();
         }
 
@@ -120,7 +141,7 @@ class MenuController extends Controller
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', Rule::in(array_keys($this->getCategories()))],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
@@ -164,7 +185,7 @@ class MenuController extends Controller
 
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
+            'category' => ['required', 'string', Rule::in(array_keys($this->getCategories()))],
             'description' => ['nullable', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

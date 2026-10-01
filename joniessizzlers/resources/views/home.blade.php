@@ -47,23 +47,42 @@
                         {{ $pageContent->get('lead_text')?->value ?? "Serving Cebu's favorite sizzling home-style plates and roasted specialties for 25 years." }}
                     </p>
                     <p class="hero-description-dark">
-                        {{ $pageContent->get('hero_description')?->value ?? "Experience the ultimate Filipino comfort food experience. From our iconic table- side flaming chicken to smoking-hot iron plates packed with savory goodness, we serve up bold flavors that bring people together." }}
+                        {{ $pageContent->get('supporting_text')?->value ?? "Experience the ultimate Filipino comfort food experience. From our iconic table-side flaming chicken to smoking-hot iron plates packed with savory goodness, we serve up bold flavors that bring people together." }}
                     </p>
                 </div>
 
                 <div class="hero-visual">
+                    {{-- Main Photo Card --}}
                     <div class="photo-card large-card">
                         @php
                             $heroImage = $pageContent->get('hero_image')?->value;
-                            $heroImageUrl = $heroImage ? asset('storage/' . $heroImage) : asset('images/homeImage 1.jpg');
+                            $heroImageUrl = $heroImage 
+                                ? (str_starts_with($heroImage, 'images/') ? asset($heroImage) : asset('storage/' . $heroImage)) 
+                                : asset('images/homeImage 1.jpg');
                         @endphp
                         <img src="{{ $heroImageUrl }}" alt="Chef preparing sizzling flaming chicken">
                     </div>
+
+                    {{-- Top Right Photo Card --}}
                     <div class="photo-card top-card">
-                        <img src="{{ asset('images/homeImage 2.jpg') }}" alt="Jonies rice bowl specialty with egg">
+                        @php
+                            $heroImage2 = $pageContent->get('hero_image_2')?->value;
+                            $heroImage2Url = $heroImage2 
+                                ? (str_starts_with($heroImage2, 'images/') ? asset($heroImage2) : asset('storage/' . $heroImage2)) 
+                                : asset('images/homeImage 2.jpg');
+                        @endphp
+                        <img src="{{ $heroImage2Url }}" alt="Jonies rice bowl specialty with egg">
                     </div>
+
+                    {{-- Bottom Right Photo Card --}}
                     <div class="photo-card bottom-card">
-                        <img src="{{ asset('images/homeImage 3.jpg') }}" alt="Sizzling sisig plate with egg and calamansi">
+                        @php
+                            $heroImage3 = $pageContent->get('hero_image_3')?->value;
+                            $heroImage3Url = $heroImage3 
+                                ? (str_starts_with($heroImage3, 'images/') ? asset($heroImage3) : asset('storage/' . $heroImage3)) 
+                                : asset('images/homeImage 3.jpg');
+                        @endphp
+                        <img src="{{ $heroImage3Url }}" alt="Sizzling sisig plate with egg and calamansi">
                     </div>
                 </div>
             </section>
@@ -120,31 +139,80 @@
                     </div>
                     <a class="text-link" href="{{ route('menu') }}">SEE FULL MENU &rarr;</a>
                 </div>
+
                 <div class="feature-grid">
-                    <article class="feature-card">
-                        <div class="feature-card-image"><img src="{{ asset('images/All time favorites.jpg') }}" alt="Jonies all-time favorite dish"></div>
-                        <div class="feature-card-body">
-                            <h3>All-Time Favorites</h3>
-                            <p>Juicy, sizzling plates made for your everyday cravings.</p>
-                            <div class="card-meta"><span>From ₱299</span><a class="text-link" href="{{ route('foods.show', 'all-time-favorites') }}">VIEW</a></div>
-                        </div>
-                    </article>
-                    <article class="feature-card">
-                        <div class="feature-card-image"><img src="{{ asset('images/House of Specialties.png') }}" alt="Jonies house specialty"></div>
-                        <div class="feature-card-body">
-                            <h3>House Specialties</h3>
-                            <p>Signature flavors with a little extra Jonies magic.</p>
-                            <div class="card-meta"><span>From ₱349</span><a class="text-link" href="{{ route('foods.show', 'house-specialties') }}">VIEW</a></div>
-                        </div>
-                    </article>
-                    <article class="feature-card">
-                        <div class="feature-card-image"><img src="{{ asset('images/Seafood.png') }}" alt="Jonies seafood dish"></div>
-                        <div class="feature-card-body">
-                            <h3>Fresh Seafood</h3>
-                            <p>Flavor-packed seafood grilled and served hot.</p>
-                            <div class="card-meta"><span>From ₱399</span><a class="text-link" href="{{ route('foods.show', 'fresh-seafood') }}">VIEW</a></div>
-                        </div>
-                    </article>
+                    @forelse($menuItems ?? [] as $item)
+                        @php
+                            $itemName = strtolower($item->title ?? $item->category ?? '');
+                            $imagePath = $item->image_path ?? $item->image ?? '';
+
+                            // Handle specific dessert/halo-halo image assignment
+                            if (str_contains($itemName, 'dessert') || str_contains($itemName, 'halo')) {
+                                $imageSrc = asset('images/Halo Halo.png');
+                            } elseif (!empty($imagePath)) {
+                                $imageSrc = str_starts_with($imagePath, 'http')
+                                    ? $imagePath
+                                    : (str_starts_with($imagePath, 'images/')
+                                        ? asset($imagePath)
+                                        : asset('storage/' . $imagePath));
+                            } else {
+                                $imageSrc = asset('images/All time favorites.jpg');
+                            }
+                        @endphp
+
+                        <article class="feature-card">
+                            <div class="feature-card-image">
+                                <img src="{{ $imageSrc }}" alt="{{ $item->title ?? 'Menu Item' }}">
+                            </div>
+                            <div class="feature-card-body">
+                                <h3>{{ $item->title ?? $item->category ?? 'Sizzling Special' }}</h3>
+                                <p>{{ Str::limit($item->description ?? 'Juicy, sizzling plates made for your everyday cravings.', 80) }}</p>
+                                <div class="card-meta">
+                                    @if(isset($item->price))
+                                        <span>₱{{ number_format($item->price, 2) }}</span>
+                                    @endif
+                                    <a class="text-link" href="{{ route('menu') }}">VIEW</a>
+                                </div>
+                            </div>
+                        </article>
+                    @empty
+                        {{-- Static Category Fallbacks --}}
+                        <article class="feature-card">
+                            <div class="feature-card-image"><img src="{{ asset('images/All time favorites.jpg') }}" alt="All-Time Favorites"></div>
+                            <div class="feature-card-body">
+                                <h3>All-Time Favorites</h3>
+                                <p>Juicy, sizzling plates made for your everyday cravings.</p>
+                                <div class="card-meta"><span>From ₱299</span><a class="text-link" href="{{ route('foods.show', 'all-time-favorites') }}">VIEW</a></div>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-image"><img src="{{ asset('images/House of Specialties.png') }}" alt="House Specialties"></div>
+                            <div class="feature-card-body">
+                                <h3>House Specialties</h3>
+                                <p>Signature flavors with a little extra Jonies magic.</p>
+                                <div class="card-meta"><span>From ₱349</span><a class="text-link" href="{{ route('foods.show', 'house-specialties') }}">VIEW</a></div>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-image"><img src="{{ asset('images/Seafood.png') }}" alt="Fresh Seafood"></div>
+                            <div class="feature-card-body">
+                                <h3>Fresh Seafood</h3>
+                                <p>Flavor-packed seafood grilled and served hot.</p>
+                                <div class="card-meta"><span>From ₱399</span><a class="text-link" href="{{ route('foods.show', 'fresh-seafood') }}">VIEW</a></div>
+                            </div>
+                        </article>
+
+                        <article class="feature-card">
+                            <div class="feature-card-image"><img src="{{ asset('images/Halo Halo.png') }}" alt="Halo-Halo Dessert"></div>
+                            <div class="feature-card-body">
+                                <h3>Dessert</h3>
+                                <p>Sweet Filipino treats featuring our signature Halo-Halo.</p>
+                                <div class="card-meta"><span>From ₱120</span><a class="text-link" href="{{ route('foods.show', 'dessert') }}">VIEW</a></div>
+                            </div>
+                        </article>
+                    @endforelse
                 </div>
             </section>
 

@@ -39,9 +39,9 @@
         <main class="contact-reference-page">
             <div class="contact-reference-content">
                 <div class="contact-reference-details">
-                    <h1>Sizzling Service is Just a Message Away</h1>
+                    <h1>{{ $pageContent->get('main_title')?->value ?? 'Sizzling Service is Just a Message Away' }}</h1>
                     <p class="contact-reference-intro">
-                        Have a question about our menu, need to book a group reservation, or want to share feedback about your recent visit? Drop us a line below or reach out directly to our team.
+                        {{ $pageContent->get('description')?->value ?? 'Have a question about our menu, need to book a group reservation, or want to share feedback about your recent visit? Drop us a line below or reach out directly to our team.' }}
                     </p>
 
                     <div class="contact-reference-info">
@@ -70,7 +70,7 @@
                 </div>
 
                 <div class="contact-reference-form">
-                    <form action="#" method="POST" class="contact-reference-form-inner">
+                    <form action="{{ route('contact.submit') }}" method="POST" class="contact-reference-form-inner">
                         @csrf
                         <div class="contact-field">
                             <input type="text" name="name" placeholder="Full Name" required>

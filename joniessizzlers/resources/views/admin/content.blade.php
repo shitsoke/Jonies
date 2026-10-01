@@ -83,7 +83,7 @@
                                         @if($entry->value)
                                             <div class="promotion-current-image" style="margin-top: 10px; display: flex; align-items: center; gap: 12px;">
                                                 <span style="color: #999; font-size: 0.82rem;">Current:</span>
-                                                <img src="{{ str_starts_with($entry->value, 'http') ? $entry->value : asset('storage/' . $entry->value) }}" alt="{{ $entry->label }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid #333; background: #000;">
+                                                <img src="{{ str_starts_with($entry->value, 'http') ? $entry->value : (str_starts_with($entry->value, 'images/') ? asset($entry->value) : asset('storage/' . $entry->value)) }}" alt="{{ $entry->label }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px; border: 1px solid #333; background: #000;">
                                             </div>
                                         @endif
                                     </label>

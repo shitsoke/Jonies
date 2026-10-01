@@ -29,10 +29,10 @@ class SiteContentFeatureTest extends TestCase
         $this->withSession(['admin_logged_in' => true])
             ->get('/admin/content')
             ->assertOk()
-            ->assertSee('name="content[home][main_title][label]"')
-            ->assertSee('name="content[home][subtitle][label]"')
-            ->assertSee('name="content[about][main_title][label]"')
-            ->assertSee('name="content[location][main_title][label]"');
+            ->assertSee('name="content[home][main_title][label]"', false)
+            ->assertSee('name="content[home][subtitle][label]"', false)
+            ->assertSee('name="content[about][main_title][label]"', false)
+            ->assertSee('name="content[location][main_title][label]"', false);
     }
 
     public function test_edits_to_content_are_shown_on_the_public_page(): void
