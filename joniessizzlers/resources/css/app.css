@@ -210,6 +210,7 @@ h1, h2, h3, .eyebrow, .section-kicker, .button, .text-link,
     .main-nav a.nav-active::after { right: auto; bottom: 8px; width: 28px; }
     .hero-section, .about-section, .careers-section, .location-section, .contact-layout, .story-section { grid-template-columns: 1fr; gap: 42px; padding: 64px 0; }
     .hero-section { min-height: auto; }
+    .hero-section.dark-hero { grid-template-columns: 1fr; gap: 32px; min-height: auto; padding: 48px 0; }
     .hero-visual { grid-template-columns: 1fr 1fr; grid-template-rows: 220px; }
     .large-card { grid-row: auto; }
     .top-card, .bottom-card { display: block; }
@@ -226,11 +227,11 @@ h1, h2, h3, .eyebrow, .section-kicker, .button, .text-link,
     .page-shell, .menu-shell, .about-shell, .location-shell, .contact-shell, .careers-shell { width: min(100% - 32px, var(--container-width)); }
     .brand-name { font-size: 1.75rem; }
     .hero-section, .about-section, .careers-section, .location-section, .contact-layout, .story-section, .home-section { padding: 52px 0; }
+    .hero-section.dark-hero { gap: 24px; padding: 36px 0 44px; }
     .dark-hero .hero-copy h1 { font-size: clamp(3.2rem, 15vw, 4.5rem); }
     .section-heading { display: block; }
     .section-heading h2 { font-size: 3.2rem; }
-    .hero-visual { grid-template-columns: 1fr; grid-template-rows: 280px; }
-    .top-card, .bottom-card { display: none; }
+    .dark-hero .hero-visual { display: none; }
     .feature-grid, .promo-grid, .location-cards { grid-template-columns: 1fr; }
     .feature-card-image, .promo-card-image { height: 210px; }
     .story-image { height: 320px; }
@@ -544,8 +545,9 @@ h1, h2, h3, .eyebrow, .section-kicker, .button, .text-link,
 .menu-card-image-wrap img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
     display: block;
+    object-fit: cover;
+    object-position: center;
 }
 
 .menu-card:hover {

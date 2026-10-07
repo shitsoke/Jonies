@@ -171,7 +171,6 @@
                                     @if(isset($item->price))
                                         <span>₱{{ number_format($item->price, 2) }}</span>
                                     @endif
-                                    <a class="text-link" href="{{ route('menu') }}">VIEW</a>
                                 </div>
                             </div>
                         </article>
@@ -182,7 +181,7 @@
                             <div class="feature-card-body">
                                 <h3>All-Time Favorites</h3>
                                 <p>Juicy, sizzling plates made for your everyday cravings.</p>
-                                <div class="card-meta"><span>From ₱299</span><a class="text-link" href="{{ route('foods.show', 'all-time-favorites') }}">VIEW</a></div>
+                                <div class="card-meta"><span>From ₱299</span></div>
                             </div>
                         </article>
 
@@ -191,7 +190,7 @@
                             <div class="feature-card-body">
                                 <h3>House Specialties</h3>
                                 <p>Signature flavors with a little extra Jonies magic.</p>
-                                <div class="card-meta"><span>From ₱349</span><a class="text-link" href="{{ route('foods.show', 'house-specialties') }}">VIEW</a></div>
+                                <div class="card-meta"><span>From ₱349</span></div>
                             </div>
                         </article>
 
@@ -200,7 +199,7 @@
                             <div class="feature-card-body">
                                 <h3>Fresh Seafood</h3>
                                 <p>Flavor-packed seafood grilled and served hot.</p>
-                                <div class="card-meta"><span>From ₱399</span><a class="text-link" href="{{ route('foods.show', 'fresh-seafood') }}">VIEW</a></div>
+                                <div class="card-meta"><span>From ₱399</span></div>
                             </div>
                         </article>
 
@@ -209,7 +208,7 @@
                             <div class="feature-card-body">
                                 <h3>Dessert</h3>
                                 <p>Sweet Filipino treats featuring our signature Halo-Halo.</p>
-                                <div class="card-meta"><span>From ₱120</span><a class="text-link" href="{{ route('foods.show', 'dessert') }}">VIEW</a></div>
+                                <div class="card-meta"><span>From ₱120</span></div>
                             </div>
                         </article>
                     @endforelse
