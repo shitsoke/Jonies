@@ -20,7 +20,7 @@
             </a>
             <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span><span></span></button>
             <nav class="main-nav dark-nav" aria-label="Main menu">
-                <a href="{{ route('home') }}">HOME</a><a href="{{ route('about') }}">ABOUT</a><a class="nav-active" href="{{ route('menu') }}">MENU</a><a href="{{ route('location') }}">LOCATION</a><a href="{{ route('contact') }}">GET IN TOUCH</a><a href="{{ route('careers') }}">CAREERS</a>
+                <a href="{{ route('home') }}">HOME</a><a href="{{ route('about') }}">ABOUT</a><a class="nav-active" href="{{ route('menu') }}">MENU</a><a href="{{ route('location') }}">LOCATION</a><a href="{{ route('reservation') }}">RESERVE A SEAT</a><a href="{{ route('contact') }}">GET IN TOUCH</a><a href="{{ route('careers') }}">CAREERS</a>
             </nav>
         </header>
 

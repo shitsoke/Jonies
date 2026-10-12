@@ -31,6 +31,7 @@
                 <a href="{{ route('about') }}">ABOUT</a>
                 <a href="{{ route('menu') }}">MENU</a>
                 <a href="{{ route('location') }}">LOCATION</a>
+                <a href="{{ route('reservation') }}">RESERVE A SEAT</a>
                 <a class="nav-active" href="{{ route('contact') }}">GET IN TOUCH</a>
                 <a href="{{ route('careers') }}">CAREERS</a>
             </nav>

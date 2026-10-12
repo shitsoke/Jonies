@@ -30,6 +30,9 @@
                 <a class="{{ request()->routeIs('admin.menu') ? 'nav-active' : '' }}" href="{{ route('admin.menu') }}">MANAGE MENU</a>
                 <a class="{{ request()->routeIs('admin.content') ? 'nav-active' : '' }}" href="{{ route('admin.content') }}">WEBSITE CONTENT</a>
                 <a class="{{ request()->routeIs('admin.promotions*') ? 'nav-active' : '' }}" href="{{ route('admin.promotions') }}">PROMOTIONS</a>
+                <a class="{{ request()->routeIs('admin.branches*') ? 'nav-active' : '' }}" href="{{ route('admin.branches') }}">MANAGE BRANCHES</a>
+                <a class="{{ request()->routeIs('admin.supervisors*') ? 'nav-active' : '' }}" href="{{ route('admin.supervisors') }}">MANAGE SUPERVISORS</a>
+                <a class="{{ request()->routeIs('admin.reservations*') ? 'nav-active' : '' }}" href="{{ route('admin.reservations') }}">MANAGE RESERVATIONS</a>
                 <a href="{{ route('home') }}" target="_blank">VIEW SITE</a>
                 <form method="POST" action="{{ route('admin.logout') }}" style="display: inline-flex; align-items: center;">
                     @csrf

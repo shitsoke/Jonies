@@ -31,6 +31,7 @@
                 <a href="{{ route('about') }}">ABOUT</a>
                 <a href="{{ route('menu') }}">MENU</a>
                 <a href="{{ route('location') }}">LOCATION</a>
+                <a href="{{ route('reservation') }}">RESERVE A SEAT</a>
                 <a href="{{ route('contact') }}">GET IN TOUCH</a>
                 <a class="nav-active" href="{{ route('careers') }}">CAREERS</a>
             </nav>
@@ -64,11 +65,11 @@
 
                     <div class="careers-apply-info">
                         <h2>HOW TO APPLY:</h2>
-                        <p>Fill out our application form below or visit any of our branch locations to submit a walk-in application.</p>
+                        <p>Click the Apply button below to view our official Facebook page for current job openings and application updates.</p>
                     </div>
 
                     <div class="careers-apply-button-wrap">
-                        <button type="button" class="careers-apply-button" onclick="document.getElementById('applicationModal').style.display = 'flex';">APPLY NOW</button>
+                        <a href="https://www.facebook.com/joniescareers" target="_blank" rel="noopener noreferrer" class="careers-apply-button" aria-label="Apply on Jonies official Facebook page">APPLY</a>
                     </div>
                 </div>
 

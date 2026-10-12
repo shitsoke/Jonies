@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CareerApplicationController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SiteContentController;
-use App\Http\Controllers\CareerApplicationController;
+use App\Http\Controllers\SupervisorController;
 use App\Models\MenuItem;
 use App\Models\ContactMessage;
 use App\Models\Promotion;
@@ -73,3 +76,33 @@ Route::get('/admin/content', [SiteContentController::class, 'adminIndex'])->name
 Route::post('/admin/content', [SiteContentController::class, 'save'])->name('admin.content.save');
 
 Route::post('/careers/apply', [CareerApplicationController::class, 'store'])->name('careers.apply');
+
+Route::get('/reservation', [ReservationController::class, 'publicForm'])->name('reservation');
+Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+Route::get('/reservation/success/{reservation}', [ReservationController::class, 'success'])->name('reservation.success');
+Route::get('/reservation/status', [ReservationController::class, 'lookup'])->name('reservation.status');
+Route::post('/reservation/status', [ReservationController::class, 'lookup'])->name('reservation.status.submit');
+
+Route::get('/supervisor/login', [SupervisorController::class, 'loginForm'])->name('supervisor.login');
+Route::post('/supervisor/login', [SupervisorController::class, 'login'])->name('supervisor.login.submit');
+Route::post('/supervisor/logout', [SupervisorController::class, 'logout'])->name('supervisor.logout');
+Route::middleware('auth')->group(function () {
+    Route::get('/supervisor/dashboard', [SupervisorController::class, 'dashboard'])->name('supervisor.dashboard');
+    Route::post('/supervisor/reservations/{reservation}/process', [SupervisorController::class, 'processReservation'])->name('supervisor.reservations.process');
+});
+
+Route::get('/admin/branches', [BranchController::class, 'adminIndex'])->name('admin.branches');
+Route::post('/admin/branches', [BranchController::class, 'store'])->name('admin.branches.store');
+Route::get('/admin/branches/{branch}/edit', [BranchController::class, 'edit'])->name('admin.branches.edit');
+Route::put('/admin/branches/{branch}', [BranchController::class, 'update'])->name('admin.branches.update');
+Route::post('/admin/branches/{branch}/toggle', [BranchController::class, 'toggleStatus'])->name('admin.branches.toggle');
+
+Route::get('/admin/supervisors', [SupervisorController::class, 'adminIndex'])->name('admin.supervisors');
+Route::get('/admin/supervisors/{user}/edit', [SupervisorController::class, 'edit'])->name('admin.supervisors.edit');
+Route::post('/admin/supervisors', [SupervisorController::class, 'store'])->name('admin.supervisors.store');
+Route::put('/admin/supervisors/{user}', [SupervisorController::class, 'update'])->name('admin.supervisors.update');
+Route::post('/admin/supervisors/{user}/toggle', [SupervisorController::class, 'toggleStatus'])->name('admin.supervisors.toggle');
+
+Route::get('/admin/reservations', [ReservationController::class, 'index'])->name('admin.reservations');
+Route::get('/admin/reservations/{reservation}', [ReservationController::class, 'details'])->name('admin.reservations.show');
+Route::post('/admin/reservations/{reservation}/process', [ReservationController::class, 'process'])->name('admin.reservations.process');

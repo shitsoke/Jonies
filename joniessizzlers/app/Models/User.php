@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
     ];
 
     /**
@@ -44,6 +46,22 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function branches()
+    {
+        return $this->belongsToMany(Branch::class, 'branch_user')->withTimestamps();
+    }
+
+    public function isSupervisor(): bool
+    {
+        return $this->role === 'supervisor' && $this->is_active;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 }
