@@ -29,23 +29,23 @@
                     <span class="section-kicker">RESERVATION</span>
                     <h1 style="margin: 8px 0 0; color: #f2a623; font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2.4rem, 5vw, 3.2rem); font-weight: 800; line-height: 1;">{{ $reservation->reference_number }}</h1>
                 </div>
-                <a href="{{ route('admin.reservations') }}" class="button button-secondary">Back to list</a>
+                <a href="{{ route('admin.reservations') }}" class="button button-secondary reservation-detail-back-link">Back to list</a>
             </div>
 
             <section class="reservation-summary-box" style="margin-bottom: 24px;">
-                <div><span>Customer</span><strong>{{ $reservation->customer_name }}</strong></div>
-                <div><span>Contact</span><strong>{{ $reservation->contact_number }}</strong></div>
-                <div><span>Branch</span><strong>{{ $reservation->branch->name }}</strong></div>
-                <div><span>Date</span><strong>{{ \Carbon\Carbon::parse($reservation->reservation_date)->format('F j, Y') }}</strong></div>
-                <div><span>Time</span><strong>{{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->reservation_time)->format('g:i A') }}</strong></div>
-                <div><span>Guests</span><strong>{{ $reservation->guest_count }}</strong></div>
-                <div><span>Status</span><strong>{{ ucfirst(str_replace('_', ' ', $reservation->status)) }}</strong></div>
-                <div><span>Requests</span><strong>{{ $reservation->additional_requests ?: 'None' }}</strong></div>
+                <div><span>Customer: </span><strong>{{ $reservation->customer_name }}</strong></div>
+                <div><span>Contact: </span><strong>{{ $reservation->contact_number }}</strong></div>
+                <div><span>Branch: </span><strong>{{ $reservation->branch->name }}</strong></div>
+                <div><span>Date: </span><strong>{{ \Carbon\Carbon::parse($reservation->reservation_date)->format('F j, Y') }}</strong></div>
+                <div><span>Time: </span><strong>{{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->reservation_time)->format('g:i A') }}</strong></div>
+                <div><span>Guests: </span><strong>{{ $reservation->guest_count }}</strong></div>
+                <div><span>Status: </span><strong>{{ ucfirst(str_replace('_', ' ', $reservation->status)) }}</strong></div>
+                <div><span>Requests: </span><strong>{{ $reservation->additional_requests ?: 'None' }}</strong></div>
             </section>
 
-            @if($reservation->decline_reason || $reservation->cancellation_reason)
+            {{-- @if($reservation->decline_reason || $reservation->cancellation_reason)
                 <div class="admin-alert error" style="margin-bottom: 24px;">{{ $reservation->decline_reason ?? $reservation->cancellation_reason }}</div>
-            @endif
+            @endif --}}
 
             @if($reservation->status === 'pending')
                 <section class="admin-panel" style="background: #181818; border: 1px solid #2a2a2a; border-radius: 8px; padding: 24px; margin-bottom: 24px;">
@@ -73,10 +73,10 @@
                 </section>
             @endif
 
-            <section class="admin-panel" style="background: #181818; border: 1px solid #2a2a2a; border-radius: 8px; padding: 24px;">
+            <section class="reservation-detail-panel reservation-history-panel">
                 <h2 style="margin-top: 0;">Processing History</h2>
-                <div class="admin-table" style="overflow-x: auto;">
-                    <table>
+                <div class="reservation-history-table-wrap">
+                    <table class="reservation-history-table">
                         <thead>
                             <tr>
                                 <th>Action</th>
@@ -95,11 +95,11 @@
                                     <td>{{ $activity->new_status ? ucfirst(str_replace('_', ' ', $activity->new_status)) : '—' }}</td>
                                     <td>{{ $activity->user?->name ?? 'System' }}</td>
                                     <td>{{ $activity->created_at->format('M d, Y h:i A') }}</td>
-                                    <td>{{ $activity->reason ?: '—' }}</td>
+                                    <td class="reservation-history-reason">{{ $activity->reason ?: '—' }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" style="text-align: center; color: #bbbbbb;">No activity recorded yet.</td>
+                                    <td colspan="6" class="reservation-history-empty">No activity recorded yet.</td>
                                 </tr>
                             @endforelse
                         </tbody>

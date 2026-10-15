@@ -2217,6 +2217,93 @@ body::after {
     line-height: 1.2;
 }
 
+.reservation-detail-panel {
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(24, 24, 24, 0.98), rgba(16, 16, 16, 0.98));
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+}
+
+.reservation-detail-back-link {
+    border-color: rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.reservation-detail-back-link:hover {
+    border-color: var(--orange);
+    background: var(--orange);
+    color: #17130d;
+}
+
+.reservation-detail-panel h2 {
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+
+.reservation-history-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: rgba(12, 12, 12, 0.7);
+}
+
+.reservation-history-table {
+    width: 100%;
+    min-width: 780px;
+    border-collapse: collapse;
+    color: #f3f0eb;
+}
+
+.reservation-history-table th,
+.reservation-history-table td {
+    padding: 18px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    vertical-align: top;
+}
+
+.reservation-history-table thead th {
+    color: #f2a623;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: rgba(242, 166, 35, 0.05);
+}
+
+.reservation-history-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.reservation-history-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.reservation-history-table td {
+    color: #f3f0eb;
+    font-size: 0.98rem;
+    line-height: 1.5;
+}
+
+.reservation-history-reason {
+    max-width: 260px;
+    color: #d6d0c8;
+}
+
+.reservation-history-empty {
+    padding: 20px 16px;
+    text-align: center;
+    color: #bbbbbb;
+}
+
 .reservation-status-summary {
     gap: 24px;
 }

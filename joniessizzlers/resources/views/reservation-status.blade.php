@@ -62,14 +62,14 @@
 
                     @if($reservation)
                         <div class="reservation-summary-box" style="margin-top: 28px;">
-                            <div><span>Reference No.</span><strong>{{ $reservation->reference_number }}</strong></div>
-                            <div><span>Branch</span><strong>{{ $reservation->branch->name }}</strong></div>
-                            <div><span>Date</span><strong>{{ \Carbon\Carbon::parse($reservation->reservation_date)->format('F j, Y') }}</strong></div>
-                            <div><span>Time</span><strong>{{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->reservation_time)->format('g:i A') }}</strong></div>
-                            <div><span>Guests</span><strong>{{ $reservation->guest_count }}</strong></div>
-                            <div><span>Status</span><strong>{{ ucfirst($reservation->status) }}</strong></div>
+                            <div><span>Reference No.: </span><strong>{{ $reservation->reference_number }}</strong></div>
+                            <div><span>Branch: </span><strong>{{ $reservation->branch->name }}</strong></div>
+                            <div><span>Date: </span><strong>{{ \Carbon\Carbon::parse($reservation->reservation_date)->format('F j, Y') }}</strong></div>
+                            <div><span>Time: </span><strong>{{ \Carbon\Carbon::createFromFormat('H:i:s', $reservation->reservation_time)->format('g:i A') }}</strong></div>
+                            <div><span>Guests: </span><strong>{{ $reservation->guest_count }}</strong></div>
+                            <div><span>Status: </span><strong>{{ ucfirst($reservation->status) }}</strong></div>
                             @if($reservation->decline_reason)
-                                <div><span>Reason</span><strong>{{ $reservation->decline_reason }}</strong></div>
+                                <div><span>Reason: </span><strong>{{ $reservation->decline_reason }}</strong></div>
                             @endif
                         </div>
                     @endif
